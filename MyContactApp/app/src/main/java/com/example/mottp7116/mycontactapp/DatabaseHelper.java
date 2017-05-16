@@ -2,6 +2,7 @@ package com.example.mottp7116.mycontactapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.StringBuilderPrinter;
@@ -21,13 +22,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null,1);
+        super(context, DATABASE_NAME, null,2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, AGE TEXT, ADDRESS TEXT)");
 
     }
 
@@ -49,5 +50,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1) return false;
         else return true;
+    }
+
+
+    public Cursor getAllData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME,null);
+        return res;
     }
 }

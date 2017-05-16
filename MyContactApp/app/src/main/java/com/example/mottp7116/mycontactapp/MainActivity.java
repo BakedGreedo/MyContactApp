@@ -1,11 +1,14 @@
 package com.example.mottp7116.mycontactapp;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,14 +33,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void addData(View v) {
         boolean isInserted = myDb.insertData(editName.getText().toString(),editAge.getText().toString(),editAddress.getText().toString());
+        Context context = getApplicationContext();
+        CharSequence text1 = "Data Added!";
+        CharSequence text2 = "Failed to Insert Data!";
+        int duration = Toast.LENGTH_SHORT;
 
         if (isInserted == true) {
             Log.d("MyContact", "Success inserting data");
-            //Insert toast message here
+            Toast toast = Toast.makeText(context,text1,duration);
+            toast.show();
         }
         else {
             Log.d("MyContact", "Failure inserting data");
+            Toast toast = Toast.makeText(context,text2,duration);
+            toast.show();
         }
     }
+
+    public void viewData(View v) {
+        Cursor res = myDb.getAllData();
+        if (res.getCount() == 0) {
+            showMessage("Error", "No data is found in the data base");
+            //output message using Log.d and toast
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        //setup a loop with cursor (res) using moveToNext
+        //append each COL to the buffer
+        //display the message using showMessage
+        showMessage("Data", buffer.toString());
+    }
+
+    private void showMessage(String title, String message) {
+        //AlertDialog.Builder
+    }
+
 
 }
