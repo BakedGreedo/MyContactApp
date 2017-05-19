@@ -58,9 +58,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         StringBuffer buffer = new StringBuffer();
-        //setup a loop with cursor (res) using moveToNext
-        //append each COL to the buffer
-        //display the message using showMessage
+        for(int i = 0; i < res.getColumnCount(); i++) {
+            buffer.append(res.getColumnName(i));
+            buffer.append("\t");
+        }
+        buffer.append("\n");
+        res.moveToFirst();
+        do{
+            for(int i= 0; i < res.getColumnCount(); i++) {
+                buffer.append(res.getString(i));
+                buffer.append("\t");
+            }
+            buffer.append("\n");
+        }
+        while(res.moveToNext());
         showMessage("Data", buffer.toString());
     }
 
